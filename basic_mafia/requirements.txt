@@ -1,0 +1,5 @@
+PyAudio==0.2.11
+py-getch==1.0.1
+grpcio==1.40.0
+grpcio-tools==1.40.0
+requests==2.26.0

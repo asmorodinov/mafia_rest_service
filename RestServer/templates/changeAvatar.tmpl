@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<h2>
+		{{ .title }}
+	</h2>
+	
+	<label for="fname">Login:</label>
+	<input type="text" id="login" name="login"><br><br>
+	<label for="password">Password:</label>
+	<input type="text" id="password" name="password"><br><br>
+	<label for="img">Upload png image:</label>
+	<input type="file" id="img" name="img" accept="image/png"><br><br>
+	<button id="post-btn">Submit</button>
+	<hr>
+	<p>Response status: </p>
+	<p id='response'></p>
+</body>
+<script>
+const button = document.getElementById('post-btn');
+const responseStatus = document.getElementById('response');
+
+const login = document.getElementById('login');
+const password = document.getElementById('password');
+const img = document.getElementById('img');
+
+button.addEventListener('click', async _ => {
+  const reader = new FileReader();
+  reader.onloadend = async () => {
+	// Use a regex to remove data url part
+	const base64String = reader.result
+		.replace('data:', '')
+		.replace(/^.+,/, '');
+
+	// send put request
+	data = {password: password.value, value: base64String};
+  
+	try {
+		const response = await fetch('/users/' + login.value + '/avatar_base64', {
+		  method: 'put',
+		  headers: {'Content-Type': 'application/json'},
+		  body: JSON.stringify(data)
+		});
+		// console.log('Completed!', response);
+		responseStatus.textContent = response.statusText;
+	} catch(err) {
+		console.error(`Error: ${err}`);
+	}
+  };
+  await reader.readAsDataURL(img.files[0]);
+});
+</script>
+</html>

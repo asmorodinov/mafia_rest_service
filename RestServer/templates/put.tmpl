@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<h2>
+		{{ .title }}
+	</h2>
+	
+	<label for="fname">Login:</label>
+	<input type="text" id="login" name="login"><br><br>
+	<label for="lname">Password:</label>
+	<input type="text" id="password" name="password"><br><br>
+	<label for="lname">Property name:</label>
+	<input type="text" id="property" name="property"><br><br>
+	<label for="lname">Property value:</label>
+	<input type="text" id="value" name="value"><br><br>
+	<button id="post-btn">Submit</button>
+	<hr>
+	<p>Response status: </p>
+	<p id='response'></p>
+</body>
+<script>
+const button = document.getElementById('post-btn');
+const responseStatus = document.getElementById('response');
+
+const login = document.getElementById('login');
+const password = document.getElementById('password');
+const name = document.getElementById('property');
+const value = document.getElementById('value');
+
+button.addEventListener('click', async _ => {
+  data = {password: password.value, value: value.value};
+  
+  try {
+    const response = await fetch('/users/' + login.value + '/' + name.value, {
+      method: 'put',
+	  headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    // console.log('Completed!', response);
+	responseStatus.textContent = response.statusText;
+  } catch(err) {
+    console.error(`Error: ${err}`);
+  }
+});
+</script>
+</html>

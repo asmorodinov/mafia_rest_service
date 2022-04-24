@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<h2>
+		{{ .title }}
+	</h2>
+	{{ range .links }}
+	<a href="{{ .Href }}">{{ .Text }}</a>
+	<br>
+	{{ end }}
+</body>
+</html>

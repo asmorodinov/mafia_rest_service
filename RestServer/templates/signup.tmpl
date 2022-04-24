@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<h2>
+		{{ .title }}
+	</h2>
+	
+	<label for="fname">Login:</label>
+	<input type="text" id="login" name="login"><br><br>
+	<label for="lname">Password:</label>
+	<input type="text" id="password" name="password"><br><br>
+	<label for="lname">Email:</label>
+	<input type="text" id="email" name="email"><br><br>
+	<button id="post-btn">Submit</button>
+	<hr>
+	<p>Response status: </p>
+	<p id='response'></p>
+</body>
+<script>
+const button = document.getElementById('post-btn');
+const responseStatus = document.getElementById('response');
+
+const login = document.getElementById('login');
+const password = document.getElementById('password');
+const email = document.getElementById('email');
+
+button.addEventListener('click', async _ => {
+  data = {login: login.value, password: password.value, email: email.value};
+  
+  try {
+    const response = await fetch('/signup', {
+      method: 'post',
+	  headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    // console.log('Completed!', response);
+	responseStatus.textContent = response.statusText;
+  } catch(err) {
+    console.error(`Error: ${err}`);
+  }
+});
+</script>
+</html>

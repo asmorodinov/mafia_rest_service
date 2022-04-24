@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package mafia;
+
+service MafiaServer {
+	rpc ConnectClient (ConnectRequest) returns (Response);
+	rpc ConnectToSpecificRoom (ConnectToRoomRequest) returns (Response);
+	
+	rpc EndDay (Empty) returns (Response);
+	rpc VoteForMafia (Player) returns (Response);
+	rpc VoteToKill (Player) returns (Response);
+	rpc CheckPlayer (Player) returns (Response);
+
+	rpc GetMessages(Empty) returns (stream Message);
+}
+
+message ConnectRequest {
+	string login = 1;
+	string password = 2;
+	string voiceChatServerAddr = 3;
+	int32 voiceChatServerPort = 4;
+}
+
+message ConnectToRoomRequest {
+	string room = 1;
+}
+
+message Player {
+	string name = 1;
+}
+
+message Empty {
+}
+
+enum Result {
+	OK = 0;
+	LoginTaken = 1;
+	AlreadyLoggedIn = 2;
+	Unauthorized = 3;
+	NotInRoom = 4;
+	GameNotRunning = 5;
+	CantVoteDuringNight = 6;
+	CantVoteOnFirstDay = 7;
+	IncorrectName = 8;
+	AlreadyInThisRoom = 9;
+	AlreadyInSomeOtherRoom = 10;
+	RoomFull = 11;
+	Unimplemented = 12;
+	FailedToLoginToVoiceChat = 13;
+}
+
+message Response {
+	Result result = 1;
+	string message = 2;
+}
+
+enum MessageType {
+	Info = 0;
+	GameEnded = 1;
+	AssignedRole = 2;
+	DayEnded = 3;
+	NightEnded = 4;
+	YouWereKilled = 5;
+}
+
+message Message {
+	MessageType type = 1;
+	string message = 2;
+}

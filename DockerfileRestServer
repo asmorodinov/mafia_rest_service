@@ -1,0 +1,14 @@
+FROM golang:1.18-alpine
+
+WORKDIR /app
+
+COPY . .
+COPY ./RestServer .
+
+EXPOSE 8080
+
+RUN go mod download
+
+RUN cd RestServer && go build .
+
+ENTRYPOINT ["./RestServer/RestServer"]

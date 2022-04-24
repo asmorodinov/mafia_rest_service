@@ -1,0 +1,12 @@
+FROM golang:1.18-alpine
+
+WORKDIR /app
+
+COPY . .
+COPY ./PDFWorker .
+
+RUN go mod download
+
+RUN cd PDFWorker && go build .
+
+ENTRYPOINT ["./PDFWorker/PDFWorker"]
